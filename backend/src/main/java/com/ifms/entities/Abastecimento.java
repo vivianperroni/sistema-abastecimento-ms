@@ -2,7 +2,12 @@ package com.ifms.entities;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.Instant;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,36 +15,49 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.ifms.entities.enums.Combustivel;
+
 @Entity
 @Table(name = "tb_abastecimento")
 public class Abastecimento implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String CPFmotorista;
-	private Date dataDoAbastecimento;
-	private String quilometragem;
-	@ManyToOne
-	@JoinColumn(name = "id_combustivel_fk")
+	@Column(name = "cpf_motorista")
+	private String cpfMotorista;
+	@Column(name = "data_do_abastecimento", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant dataDoAbastecimento;
+	private Long quilometragem;
+	@Enumerated(EnumType.ORDINAL)
 	private Combustivel combustivel;
+	@Column(name = "quantidade_em_litros")
 	private Integer quantidadeEmLitros;
+	@Column(name = "valor_por_litro")
 	private Double valorPorLitro;
+	@ManyToOne
+	@JoinColumn(name = "id_autoposto_fk")
+	private AutoPosto autoPosto;
+	@ManyToOne
+	@JoinColumn(name = "id_veiculo_fk")
+	private Veiculo veiculo;
 	
 	public Abastecimento() { }
 	
-	public Abastecimento(Long id, String CPFmotorista, Date dataDoAbastecimento, 
-			String quilometragem, Combustivel combustivel, Integer quantidadeEmLitros, Double valorPorLitro) {
+	public Abastecimento(Long id, String cpfMotorista, Instant dataDoAbastecimento, Long quilometragem, Combustivel combustivel, 
+			Integer quantidadeEmLitros, Double valorPorLitro, AutoPosto autoPosto,Veiculo veiculo) {
 		this.id = id;
-		this.CPFmotorista = CPFmotorista;
+		this.cpfMotorista = cpfMotorista;
 		this.dataDoAbastecimento = dataDoAbastecimento;
 		this.quilometragem = quilometragem;
 		this.combustivel = combustivel;
 		this.quantidadeEmLitros = quantidadeEmLitros;
 		this.valorPorLitro = valorPorLitro;
+		this.autoPosto = autoPosto;
+		this.veiculo = veiculo;	
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -49,26 +67,26 @@ public class Abastecimento implements Serializable{
 	}
 
 	public String getCpfMotorista() {
-		return CPFmotorista;
+		return cpfMotorista;
 	}
 
 	public void setCpfMotorista(String cpfMotorista) {
-		this.CPFmotorista = cpfMotorista;
+		this.cpfMotorista = cpfMotorista;
 	}
 
-	public Date getDataDoAbastecimento() {
+	public Instant getDataDoAbastecimento() {
 		return dataDoAbastecimento;
 	}
 
-	public void setDataDoAbastecimento(Date dataDoAbastecimento) {
+	public void setDataDoAbastecimento(Instant dataDoAbastecimento) {
 		this.dataDoAbastecimento = dataDoAbastecimento;
 	}
 
-	public String getQuilometragem() {
+	public Long getQuilometragem() {
 		return quilometragem;
 	}
 
-	public void setQuilometragem(String quilometragem) {
+	public void setQuilometragem(Long quilometragem) {
 		this.quilometragem = quilometragem;
 	}
 
@@ -95,7 +113,23 @@ public class Abastecimento implements Serializable{
 	public void setValorPorLitro(Double valorPorLitro) {
 		this.valorPorLitro = valorPorLitro;
 	}
-	
+
+	public AutoPosto getAutoPosto() {
+		return autoPosto;
+	}
+
+	public void setAutoPosto(AutoPosto autoPosto) {
+		this.autoPosto = autoPosto;
+	}
+
+	public Veiculo getVeiculo() {
+		return veiculo;
+	}
+
+	public void setVeiculo(Veiculo veiculo) {
+		this.veiculo = veiculo;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

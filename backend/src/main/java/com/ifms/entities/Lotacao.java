@@ -1,11 +1,17 @@
 package com.ifms.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,23 +22,32 @@ public class Lotacao implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String descricao;
-	private String endereco;
+	private String descricao;	
 	private String email;
 	private String site;
 	private String telefone;
+	private String endereco;
+	@ManyToOne
+	@JoinColumn(name = "id_cidade_fk")
+	private Cidade cidade;
+	@ManyToMany
+	@JoinTable(name = "tb_lotacao_veiculo", 
+		joinColumns = @JoinColumn(name = "lotacao_id"),
+		inverseJoinColumns = @JoinColumn(name = "veiculo_id"))
+	Set<Veiculo> veiculos = new HashSet<>();
 	
 	public Lotacao() { }
 	
-	public Lotacao(Long id, String descricao, String endereco, String email, String site, String telefone) {
+	public Lotacao(Long id, String descricao, String email, String site, String telefone, String endereco, Cidade cidade) {
 		this.id = id;
 		this.descricao = descricao;
-		this.endereco = endereco;
 		this.email = email;
 		this.site = site;
 		this.telefone = telefone;
-}
-	
+		this.endereco = endereco;
+		this.cidade = cidade;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -47,14 +62,6 @@ public class Lotacao implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
 	}
 
 	public String getEmail() {
@@ -79,6 +86,30 @@ public class Lotacao implements Serializable{
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
+
+	public Set<Veiculo> getVeiculos() {
+		return veiculos;
+	}
+
+	public void setVeiculos(Set<Veiculo> veiculos) {
+		this.veiculos = veiculos;
 	}
 
 	@Override

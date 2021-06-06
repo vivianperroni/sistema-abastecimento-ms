@@ -1,11 +1,13 @@
 package com.ifms.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,8 @@ public class Marca implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String descricao;
+	@OneToMany(mappedBy = "marca")
+	private List<Modelo> modelos;
 	
 	public Marca() { }
 	
@@ -24,7 +28,8 @@ public class Marca implements Serializable{
 		this.id = id;
 		this.descricao = descricao;
 }
-	
+
+
 	public Long getId() {
 		return id;
 	}
@@ -39,6 +44,14 @@ public class Marca implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public List<Modelo> getModelos() {
+		return modelos;
+	}
+
+	public void setModelos(List<Modelo> modelos) {
+		this.modelos = modelos;
 	}
 
 	@Override

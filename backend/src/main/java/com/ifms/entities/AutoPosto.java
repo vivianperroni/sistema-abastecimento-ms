@@ -2,38 +2,49 @@ package com.ifms.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_posto")
+@Table(name = "tb_autoposto")
 public class AutoPosto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "nome_fantasia")
 	private String nomeFantasia;
 	private String telefone;
 	private String email;
+	@Column(name = "cnpj")
 	private String CNPJ;
 	private String endereco;
+	@ManyToOne
+	@JoinColumn(name = "id_cidade_fk")
+	private Cidade cidade;
 
 	
 	public AutoPosto() { }
 	
-	public AutoPosto(Long id, String nomeFantasia, String telefone, String email, String CNPJ, String endereco) {
+	public AutoPosto(Long id, String nomeFantasia, String telefone, String email, 
+			String cnpj, String endereco, Cidade cidade) {
 		this.id = id;
 		this.nomeFantasia = nomeFantasia;
 		this.telefone = telefone;
 		this.email = email;
-		this.CNPJ = CNPJ;
+		CNPJ = cnpj;
 		this.endereco = endereco;
+		this.cidade = cidade;
 	}
 
+	
 	public Long getId() {
 		return id;
 	}
@@ -80,6 +91,14 @@ public class AutoPosto implements Serializable{
 
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
+	}
+
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
 	}
 
 	@Override

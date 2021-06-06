@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,15 +19,18 @@ public class Modelo implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String descricao;
+	@ManyToOne
+	@JoinColumn(name = "id_marca_fk")
+	private Marca marca;
 	
 	public Modelo() { }
 	
-	public Modelo(Long id, String descricao) {
+	public Modelo(Long id, String descricao, Marca marca) {
 		this.id = id;
 		this.descricao = descricao;
+		this.marca = marca;
 }
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -40,6 +45,14 @@ public class Modelo implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Marca getMarca() {
+		return marca;
+	}
+
+	public void setMarca(Marca marca) {
+		this.marca = marca;
 	}
 
 	@Override

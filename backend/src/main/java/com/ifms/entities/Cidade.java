@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,13 +19,17 @@ public class Cidade implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	@ManyToOne
+	@JoinColumn(name = "id_estado_fk")
+	private Estado UF;
 	
 	public Cidade() { }
 	
-	public Cidade(Long id, String nome) {
+	public Cidade(Long id, String nome, Estado UF) {
 		this.id = id;
 		this.nome = nome;
-}
+		this.UF = UF;
+}	
 
 	public Long getId() {
 		return id;
@@ -39,6 +45,14 @@ public class Cidade implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Estado getUF() {
+		return UF;
+	}
+
+	public void setUF(Estado uF) {
+		UF = uF;
 	}
 
 	@Override

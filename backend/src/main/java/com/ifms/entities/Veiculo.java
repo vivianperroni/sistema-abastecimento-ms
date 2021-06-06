@@ -2,18 +2,25 @@ package com.ifms.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.ifms.entities.enums.Combustivel;
 
 @Entity
 @Table(name = "tb_veiculo")
 public class Veiculo implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Integer ano;
@@ -22,13 +29,19 @@ public class Veiculo implements Serializable{
 	private String patrimonio;
 	private String chassi;
 	private String versao;
-	private String capacidadeTanque;
+	@Column(name = "capacidade_tanque")
+	private Integer capacidadeTanque;
+	@Column(name = "tipo_combustivel")
+	@Enumerated(EnumType.ORDINAL)
 	private Combustivel tipoCombustivel;
+	@ManyToOne
+	@JoinColumn(name = "id_tipo_fk")
+	private Tipo tipo;
 	
 	public Veiculo() { }
 	
-	public Veiculo(Long id, Integer ano, String placa, String renavan, String patrimonio, 
-			String chassi, String versao, String capacidadeTanque, Combustivel tipoCombustivel) {
+	public Veiculo(Long id, Integer ano, String placa, String renavan, String patrimonio, String chassi, String versao,
+			Integer capacidadeTanque, Combustivel tipoCombustivel, Tipo tipo) {
 		this.id = id;
 		this.ano = ano;
 		this.placa = placa;
@@ -38,9 +51,9 @@ public class Veiculo implements Serializable{
 		this.versao = versao;
 		this.capacidadeTanque = capacidadeTanque;
 		this.tipoCombustivel = tipoCombustivel;
+		this.tipo = tipo;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -97,11 +110,11 @@ public class Veiculo implements Serializable{
 		this.versao = versao;
 	}
 
-	public String getCapacidadeTanque() {
+	public Integer getCapacidadeTanque() {
 		return capacidadeTanque;
 	}
 
-	public void setCapacidadeTanque(String capacidadeTanque) {
+	public void setCapacidadeTanque(Integer capacidadeTanque) {
 		this.capacidadeTanque = capacidadeTanque;
 	}
 
@@ -111,6 +124,14 @@ public class Veiculo implements Serializable{
 
 	public void setTipoCombustivel(Combustivel tipoCombustivel) {
 		this.tipoCombustivel = tipoCombustivel;
+	}
+
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override
